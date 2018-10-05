@@ -38,12 +38,12 @@ class WebHookController extends BaseController
 
     public function postMessage(Request $request)
     {
-    /*    $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538576128186,"messaging":
+        $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538576128186,"messaging":
             [{"sender":{"id":"1516870241740065"},"recipient":{"id":"1350006375032481"},"timestamp":1538576127576,
             "message":{"mid":"3Hzqru_yNpFsgoTdXdhixKGzbtQMiHPb5wo0VlnGueqPdmVeV8pFFzcniFJjqK6A7h9Iaj7mDC4s5i6-KqgzQw","seq":62160,
-                "text":"tu moi"}}]}]}';*/
-        // $input = json_decode($sam, true);
-        $input = json_decode(file_get_contents('php://input'), true);
+                "text":"tu moi"}}]}]}';
+        $input = json_decode($sam, true);
+        // $input = json_decode(file_get_contents('php://input'), true);
         $fanpage_id = isset($input['entry'][0]['id']) ? $input['entry'][0]['id'] : NULL;
         $message_chat = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : NULL;
         $attachments = isset($input['entry'][0]['messaging'][0]['message']['attachments']) ? $input['entry'][0]['messaging'][0]['message']['attachments'] : NULL;
@@ -94,7 +94,7 @@ class WebHookController extends BaseController
                         $keywords = DB::table('keywords')
                             ->join('actions', 'keywords.action_id', '=', 'actions.id')
                             ->join('action_values', 'action_values.action_id', '=', 'actions.id')
-                            ->select('actions.type as type_rp','action_values.*')
+                            ->select('actions.title as title_button','actions.type as type_rp','action_values.*')
                             ->where('keywords.name','=' ,$message_chat)
                             ->where('keywords.page_id','=' ,$fanpage_id)
                             ->first();
@@ -133,12 +133,20 @@ class WebHookController extends BaseController
             $array_bt = array();
             if(count($action_values)){
                 foreach($action_values as $value){
-                       $data = array(
+                    if($value->type == 1){
+                        $data = array(
                         "type"=>"postback",
-                        "payload" =>"DEVELOPER_DEFINED_PAYLOAD",
-                        "title" => $value->value
+                        "payload" =>$value->value,
+                        "title" => $value->title
                        ); 
-                       array_push($array_bt,$data);
+                    }else{
+                        $data = array(
+                            "type"=>"web_url",
+                            "url" =>$value->value,
+                            "title" => $value->title
+                           ); 
+                    }
+                    array_push($array_bt,$data);
                 }
                 $messageData = array(
                     "recipient" => array('id'=>$sender),
@@ -147,7 +155,7 @@ class WebHookController extends BaseController
                             "type" => "template",
                             "payload" => array(
                                   "template_type" =>"button",
-                                  "text" =>$keywords->value,
+                                  "text" =>$keywords->title_button,
                                   "buttons" => $array_bt
                               )
                           )
