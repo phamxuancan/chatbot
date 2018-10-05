@@ -60,7 +60,7 @@ class ActionController extends BaseController
             $desc = $request->desc;
             $type = Constants::ACTION_TYPE_BUTTON;
             //TODO: remove hard code page id
-            $pageId = session('facebookPage');
+            $pageId = session('page_id');
 
             $id = $request->id;
             $action = null;
