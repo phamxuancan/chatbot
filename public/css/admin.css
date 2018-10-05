@@ -1,0 +1,20 @@
+.fb-tool {
+    text-align: center;
+}
+
+.fb-tool a {
+    padding-left: 3px;
+    padding-right: 3px;
+    display: inline-block;
+}
+
+.tool-box {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tool-box li {
+    display: inline-block;
+    margin-right: 10px;
+}
