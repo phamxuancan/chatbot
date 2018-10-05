@@ -38,12 +38,12 @@ class WebHookController extends BaseController
 
     public function postMessage(Request $request)
     {
-        $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538576128186,"messaging":
+       /* $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538576128186,"messaging":
             [{"sender":{"id":"1516870241740065"},"recipient":{"id":"1350006375032481"},"timestamp":1538576127576,
             "message":{"mid":"3Hzqru_yNpFsgoTdXdhixKGzbtQMiHPb5wo0VlnGueqPdmVeV8pFFzcniFJjqK6A7h9Iaj7mDC4s5i6-KqgzQw","seq":62160,
                 "text":"tu moi"}}]}]}';
-        $input = json_decode($sam, true);
-        // $input = json_decode(file_get_contents('php://input'), true);
+        $input = json_decode($sam, true);*/
+        $input = json_decode(file_get_contents('php://input'), true);
         $fanpage_id = isset($input['entry'][0]['id']) ? $input['entry'][0]['id'] : NULL;
         $message_chat = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : NULL;
         $attachments = isset($input['entry'][0]['messaging'][0]['message']['attachments']) ? $input['entry'][0]['messaging'][0]['message']['attachments'] : NULL;
