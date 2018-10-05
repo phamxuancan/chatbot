@@ -263,18 +263,18 @@ class WebHookController extends BaseController
             $input = json_decode($curl_response, true);
             if( isset($input['error']) ) {
                 Log::info("Lỗi reply comment on fanpage comment ID". $comment_id);
-                return false;
+                return 'false';
             }else{
                 Log::info("Reply success". $comment_id);
-                return true;
+                return 'success';
             }
         }else{
             Log::info("Reply error : Comment sai từ khóa post Id :". $post_id . " / comment :". $comment_text);
-            return false;  
+            return 'false';  
         }
     }else{
         Log::info("Reply error : chưa cấu hình fanpage". $fanpage_id);
-        return false;
+        return 'false'; 
     }
 }
     private function sendMessageToUser($sender,$message_text,$fanpage_id){
@@ -318,13 +318,13 @@ class WebHookController extends BaseController
                 $response_result = json_decode($curl_response);
                 if(isset($response_result->error)){
                     Log::error('Lỗi gửi tin nhắn' . json_encode($response_result) .'data send' .json_encode($messageData));
-                    return false;
+                    return 'false';
                 }
-                return true;
+                return 'success';
             }
         }catch (Exception $e){
             Log::error('Khong gui dc message' . $e->getMessage());
-            return false;
+            return 'false';
         }
     }
 }
