@@ -104,7 +104,7 @@ class WebHookController extends BaseController
                             if($keywords->type_rp == 1){//phản hồi text
                                 $message_text = $keywords->value;
                             }else{
-                                $this->sendButtonToUser($sender,$keywords,$fanpage_id); 
+                                return $this->sendButtonToUser($sender,$keywords,$fanpage_id); 
                             }
                         }
                     }
@@ -161,9 +161,9 @@ class WebHookController extends BaseController
                           )
                     )
                 );
-              $this->callSendAPI($messageData,$sender,$fanpage_id);
+              return $this->callSendAPI($messageData,$sender,$fanpage_id);
             }else{
-                $this->sendMessageToUser($sender,$keywords->value,$fanpage_id); 
+                return $this->sendMessageToUser($sender,$keywords->value,$fanpage_id); 
             }
           
       }
