@@ -38,19 +38,15 @@ class WebHookController extends BaseController
 
     public function postMessage(Request $request)
     {
-       /* $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538576128186,"messaging":
-            [{"sender":{"id":"1516870241740065"},"recipient":{"id":"1350006375032481"},"timestamp":1538576127576,
-            "message":{"mid":"3Hzqru_yNpFsgoTdXdhixKGzbtQMiHPb5wo0VlnGueqPdmVeV8pFFzcniFJjqK6A7h9Iaj7mDC4s5i6-KqgzQw","seq":62160,
-                "text":"tu moi"}}]}]}';
-        $input = json_decode($sam, true);*/
-        $input = json_decode(file_get_contents('php://input'), true);
+        $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538833375910,"messaging":[{"recipient":{"id":"1350006375032481"},"timestamp":1538833375910,"sender":{"id":"1516870241740065"},"postback":{"payload":"Phan hoi 2","title":"Phan hoi 2"}}]}]}';
+        $input = json_decode($sam, true);
+        // $input = json_decode(file_get_contents('php://input'), true);
         $fanpage_id = isset($input['entry'][0]['id']) ? $input['entry'][0]['id'] : NULL;
-        $message_chat = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : NULL;
         $attachments = isset($input['entry'][0]['messaging'][0]['message']['attachments']) ? $input['entry'][0]['messaging'][0]['message']['attachments'] : NULL;
-        $payload = isset($input['entry'][0]['messaging'][0]['postback']) ? $input['entry'][0]['messaging'][0]['postback'] : NULL;
-        $bat_dau = isset($input['entry'][0]['messaging'][0]['postback']['payload']) ? $input['entry'][0]['messaging'][0]['postback']['payload'] : NULL;
+        //$payload = isset($input['entry'][0]['messaging'][0]['postback']) ? $input['entry'][0]['messaging'][0]['postback'] : NULL;
+        $payload = isset($input['entry'][0]['messaging'][0]['postback']['payload']) ? $input['entry'][0]['messaging'][0]['postback']['payload'] : NULL;
         $quick_reply = isset($input['entry'][0]['messaging'][0]['message']['quick_reply']['payload']) ? $input['entry'][0]['messaging'][0]['message']['quick_reply']['payload'] : NULL;
-		
+		$message_chat = isset($input['entry'][0]['messaging'][0]['message']['text']) ? $input['entry'][0]['messaging'][0]['message']['text'] : $payload;
         $sender = isset($input['entry'][0]['messaging'][0]['sender']['id']) ? $input['entry'][0]['messaging'][0]['sender']['id'] : NULL;
         if(!empty($sender)){
             $facebook_id = $input['entry'][0]['messaging'][0]['sender']['id'];
@@ -85,7 +81,7 @@ class WebHookController extends BaseController
 		if(!empty($fanpage_id)){
             try{
                 $way_repay = 0;
-                if(!empty($bat_dau) && $bat_dau == "Bắt đầu" ){
+                if(!empty($payload) && $payload == "Bắt đầu" ){
                     $message_text = 'Xin chào bạn đến với fanpage, chúng tôi có thể giúp gì cho bạn!';
                     // insert facebook Id
                 }else{
@@ -112,7 +108,7 @@ class WebHookController extends BaseController
                 // dd($keywords);
                 if(!empty($sender)){
                     if($way_repay == 0){
-                        $this->sendMessageToUser($sender,$message_text,$fanpage_id); 
+                        return $this->sendMessageToUser($sender,$message_text,$fanpage_id); 
                     }
                 }
                    
@@ -279,7 +275,7 @@ class WebHookController extends BaseController
 }
     private function sendMessageToUser($sender,$message_text,$fanpage_id){
         $messageData =array('recipient'=>array('id'=>$sender),'message'=>array('text'=>$message_text));
-        $this->callSendAPI($messageData,$sender,$fanpage_id);
+        return $this->callSendAPI($messageData,$sender,$fanpage_id);
     }
     private  function callSendAPI($messageData,$sender='',$fanpage_id){
         try{
@@ -320,7 +316,7 @@ class WebHookController extends BaseController
                     Log::error('Lỗi gửi tin nhắn' . json_encode($response_result) .'data send' .json_encode($messageData));
                     return 'false';
                 }
-                return 'success';
+                return json_encode($response_result);
             }
         }catch (Exception $e){
             Log::error('Khong gui dc message' . $e->getMessage());
