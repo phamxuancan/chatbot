@@ -17,8 +17,8 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form id="demo-form2" data-parsley-validate="" method="post"
-                          class="form-horizontal form-label-left" novalidate="">
+                    <form id="demo-form2"  method="post"
+                          class="form-horizontal form-label-left" >
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                         <div class="form-group">
@@ -28,7 +28,7 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input type="text" id="content" name="content"
                                        value="<?php echo  isset($start_menu->content)?$start_menu->content:''; ?>"
-                                       class="form-control col-md-7 col-xs-12">
+                                       class="form-control col-md-7 col-xs-12" required>
                             </div>
                         </div>
                         <div class="ln_solid"></div>

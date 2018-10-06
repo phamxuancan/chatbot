@@ -75,9 +75,13 @@ class PersistentMenuController extends BaseController
                     ]
                 );
             }else{
-                dd($check_exit);
+                DB::table('persistent_menus')
+                ->where('id', $check_exit->id)
+                ->update([
+					'content' => $input['content'],
+				]);
             }
-            
+            \Session::flash('success','Lưu thành công.');
             return redirect('persistent');
         } else if ($action == 'menu') {
 
