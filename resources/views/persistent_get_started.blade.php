@@ -1,15 +1,6 @@
 @extends('admin')
 
 @section('content')
-    @php
-        $configureGetStaredButtonURL = \App\Helper::makeURL('persistent?action=get_started');
-        $configureMenuURL = \App\Helper::makeURL('persistent?action=menu');
-
-        $payload = '';
-        if($getStartedButton){
-            $payload = $getStartedButton->payload;
-        }
-    @endphp
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
@@ -34,49 +25,12 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="payload">
                                 Nội dung
                             </label>
-
-
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" id="payload" name="payload"
-                                       value="{{old('payload', $payload)}}"
+                                <input type="text" id="content" name="content"
+                                       value="<?php echo  isset($start_menu->content)?$start_menu->content:''; ?>"
                                        class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">
-                                Chọn từ khóa
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div id="menu-response">
-                                    <div class="ln_solid"></div>
-                                    @if($keywordList && count($keywordList) > 0)
-                                        @foreach($keywordList as $keyword)
-                                            @php
-                                                $id= $keyword -> id;
-                                                $name = $keyword -> name;
-                                                $value = $keyword -> value;
-                                                $desc = '- '.$keyword -> desc;
-                                            @endphp
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio"
-                                                           value="{{ $value }}"
-                                                           name="keyword">
-                                                    {{$value}}
-                                                </label>
-                                                <div style="margin-left: 25px; font-size: 12px; font-style: italic; padding: 4px 0;">
-                                                    {{$desc}}
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <h2>Chưa có từ khóa nào!!!</h2>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

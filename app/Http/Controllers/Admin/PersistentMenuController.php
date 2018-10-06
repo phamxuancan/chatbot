@@ -14,7 +14,8 @@ use Carbon\Carbon;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\DB;
 
 use App\FbPage;
 
@@ -27,30 +28,17 @@ class PersistentMenuController extends BaseController
     public function get(Request $request)
     {
         $action = $request->action;
-        $page_id = 1;
-        $getStartedButton = null;
-        $menuList = null;
-
-        $persistentMenu = PersistentMenu::findByPage($page_id);
-        if ($persistentMenu) {
-            $content = $persistentMenu->content;
-
-            if ($content) {
-                $objContent = json_decode($content);
-                $getStartedButton = $objContent->getStartedButton;
-                $menuList = $objContent->menuList;
-            }
-        }
+        $page_id = session('page_id');
+        $check_exit = DB::table('persistent_menus')
+        ->where('page_id', '=', $page_id)
+        ->where('type', '=', 1)
+        ->first();
 
         if ($action == 'get_started') {
-            $keywordList = Keyword::all();
+
 
             return view(
-                'persistent_get_started',
-                array(
-                    'getStartedButton' => $getStartedButton,
-                    'keywordList' => $keywordList
-                )
+                'persistent_get_started',['start_menu'=>$check_exit]
             );
         } else if ($action == 'menu') {
             return view(
@@ -61,11 +49,7 @@ class PersistentMenuController extends BaseController
             );
         } else {
             return view(
-                'persistent',
-                array(
-                    'getStartedButton' => $getStartedButton,
-                    'menuButtonList' => $menuList,
-                )
+                'persistent'
             );
         }
     }
@@ -73,41 +57,27 @@ class PersistentMenuController extends BaseController
     public function update(Request $request)
     {
         $action = $request->action;
-        $page_id = 1;
-
+        $page_id = session('page_id');
+        $input = Input::all();
         if ($action == 'get_started') {
-            $payload = $request->payload;
-
-            $getStaredButton = null;
-            $version = 0;
-            $updatedAt = Carbon::now()->timestamp;
-
-            $persistentMenu = $this->getCurrentPersistentMenu();
-
-            $persistentMenuContainer = $this->convertToContainer($persistentMenu);
-
-            $getStaredButton = $persistentMenuContainer->getStartedButton;
-            if (!$getStaredButton) {
-                $getStaredButton = new PersistentMenuGetStartedButton();
-            } else {
-                $version = $getStaredButton->version;
-                $version++;
+            $check_exit = DB::table('persistent_menus')
+            ->where('page_id', '=', $page_id)
+            ->where('type', '=', 1)
+            ->first();
+            $content = $input['content'];
+            if(empty($check_exit)){
+                $last_id = DB::table('persistent_menus')->insert(
+                    [
+                        'title' => 'button_start',
+                        'page_id' => $page_id,
+                        'content' => $input['content'],
+                        'type' => 1
+                    ]
+                );
+            }else{
+                dd($check_exit);
             }
-
-            $getStaredButton->payload = $payload;
-            $getStaredButton->version = $version;
-            $getStaredButton->updatedAt = $updatedAt;
-
-            $persistentMenuContainer->getStartedButton = $getStaredButton;
-
-            $content = $this->convertToContent($persistentMenuContainer);
-
-            if (!$persistentMenu) {
-                $persistentMenu = new PersistentMenu();
-            }
-            $persistentMenu->page_id = $page_id;
-            $persistentMenu->content = $content;
-            $persistentMenu->save();
+            
             return redirect('persistent');
         } else if ($action == 'menu') {
 

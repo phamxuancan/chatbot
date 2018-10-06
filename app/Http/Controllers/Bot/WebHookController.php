@@ -83,6 +83,13 @@ class WebHookController extends BaseController
                 $way_repay = 0;
                 if(!empty($payload) && $payload == "Bắt đầu" ){
                     $message_text = 'Xin chào bạn đến với fanpage, chúng tôi có thể giúp gì cho bạn!';
+                    $menu_start = DB::table('persistent_menus')
+                        ->where('page_id', '=', $fanpage_id)
+                        ->where('type', '=', 1)
+                        ->first();
+                    if(!empty($menu_start)){
+                        $message_text = $menu_start->content;
+                    }
                     // insert facebook Id
                 }else{
                     // if chat content is text
