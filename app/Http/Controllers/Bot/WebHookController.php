@@ -38,9 +38,9 @@ class WebHookController extends BaseController
 
     public function postMessage(Request $request)
     {
-        $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538833375910,"messaging":[{"recipient":{"id":"1350006375032481"},"timestamp":1538833375910,"sender":{"id":"1516870241740065"},"postback":{"payload":"Phan hoi 2","title":"Phan hoi 2"}}]}]}';
-        $input = json_decode($sam, true);
-        // $input = json_decode(file_get_contents('php://input'), true);
+       // $sam = '{"object":"page","entry":[{"id":"1350006375032481","time":1538833375910,"messaging":[{"recipient":{"id":"1350006375032481"},"timestamp":1538833375910,"sender":{"id":"1516870241740065"},"postback":{"payload":"Phan hoi 2","title":"Phan hoi 2"}}]}]}';
+        //$input = json_decode($sam, true);
+         $input = json_decode(file_get_contents('php://input'), true);
         $fanpage_id = isset($input['entry'][0]['id']) ? $input['entry'][0]['id'] : NULL;
         $attachments = isset($input['entry'][0]['messaging'][0]['message']['attachments']) ? $input['entry'][0]['messaging'][0]['message']['attachments'] : NULL;
         //$payload = isset($input['entry'][0]['messaging'][0]['postback']) ? $input['entry'][0]['messaging'][0]['postback'] : NULL;
