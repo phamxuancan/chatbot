@@ -15,7 +15,7 @@
                     </h2>
                     <ul class="nav navbar-right">
                         <li>
-                            <a href="{{\App\Helper::makeURL('persistent/menu/update')}}">
+                            <a href="{{\App\Helper::makeURL('persistent/menu/update?action=menu')}}">
                                 <button type="button" class="btn btn-primary btn-sm">Thêm mới
                                 </button>
                             </a>
@@ -30,7 +30,7 @@
                             <td>#</td>
                             <td>Tiêu đề</td>
                             <td>Loại</td>
-                            <td>Nội dung</td>
+                            <td>Action</td>
                             <td>Thao tác</td>
                         </tr>
                         </thead>
@@ -39,10 +39,10 @@
                             @foreach($menuList as $item)
                                 @php
                                     $id = $item->id;
-                                    $parentId = $item->parentId;
-                                    $type = $item->type;
+                
+                                    $type = $item->isChild==0?'Menu Cha':'Menu button';
                                     $title = $item -> title;
-                                    $payload = $item->payload;
+                                    $action_id = $item->action_id;
                                     $update_path = 'persistent/menu/update?id='.$id;
                                     $delete_path = 'persistent/menu/delete?id='.$id;
                                 @endphp
@@ -50,7 +50,7 @@
                                     <td>{{$id}}</td>
                                     <td>{{$title}}</td>
                                     <td>{{$type}}</td>
-                                    <td>{{$payload}}</td>
+                                    <td>{{$action_id}}</td>
                                     <td>
                                         <ul class="tool-box">
                                             <li>

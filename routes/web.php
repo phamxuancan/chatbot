@@ -42,6 +42,11 @@ Route::post('persistent', 'Admin\PersistentMenuController@update');
 Route::get('persistent/menu/update', 'Admin\PersistentMenuController@updateMenu');
 Route::post('persistent/menu/update', 'Admin\PersistentMenuController@updateMenu');
 Route::post('persistent/menu/delete', 'Admin\PersistentMenuController@deleteMenu');
+Route::get('active_persistent', 'Admin\PersistentMenuController@active_persistent');
+Route::get('persistent_child', 'Admin\PersistentMenuController@list_persistent_child');
+Route::get('add_persistent', 'Admin\PersistentMenuController@add_persistent');
+Route::post('add_persistent', 'Admin\PersistentMenuController@add_persistent');
+Route::get('menuchild/publish', 'Admin\PersistentMenuController@publish');
 
 // can action
 Route::get('login', [ 'as' => 'login', 'uses' => 'UserController@login']);

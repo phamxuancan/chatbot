@@ -105,6 +105,10 @@
                                         <a href="{{ \App\Helper::makeURL('persistent') }}">Persistent
                                             Menu</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ \App\Helper::makeURL('persistent_child') }}">Menu con
+                                            </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-comment"></i> Quản lý comment <span
@@ -244,7 +248,7 @@
         <!-- footer content -->
         <footer>
             <div class="pull-right">
-                Facebook Chatbot Manager by Louis Solo
+                Facebook Chatbot Manager by Kudo
             </div>
             <div class="clearfix"></div>
         </footer>

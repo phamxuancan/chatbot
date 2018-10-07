@@ -10,7 +10,7 @@ use App\Keyword;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\DB;
 
 use App\FbPage;
 
@@ -23,22 +23,17 @@ class KeywordController extends BaseController
      */
     public function get(Request $request)
     {
-        $page = $request->page;
-        if (!$page) {
-            $page = 1;
-        }
+        $fanpage_id  =  session('page_id');
 
-        $skip = $page - 1 * Constants::PAGE_SIZE;
-
-        $keywords = Keyword::skip($skip)
-            ->take(Constants::PAGE_SIZE)
-            ->get();
-
+        $keywords  = DB::table('keywords')
+        ->join('actions', 'keywords.action_id', '=', 'actions.id')
+        ->select('actions.type as action_type','keywords.*')
+        ->where('keywords.page_id', '=', $fanpage_id)
+        ->get();
         return view(
             'keyword',
             array(
-                'keywords' => $keywords,
-                'page' => $page
+                'keywords' => $keywords
             )
         );
     }

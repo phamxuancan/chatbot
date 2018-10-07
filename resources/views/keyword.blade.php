@@ -35,7 +35,7 @@
                                 $id = $keyword->id;
                                 $name = $keyword->name;
                                 $value = $keyword->value;
-                                $type = $keyword->getType();
+                                $type = $keyword->action_type;
                                 $actionName = \App\Helper::getKeywordAction($type);
 
                                 $update_path = 'keyword/update?id='.$id;

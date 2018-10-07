@@ -31,25 +31,12 @@
                                    class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="type">
-                            Loại
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" id="isChild" name="isChild" required>
-                                <option value="">Chọn loại menu</option>
-                                <option value="1">Menu chính</option>
-                                <option value="0">Menu Cha</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="type_reply">
                         <div class="form-group" >
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">
                             Chọn loại
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="radio" name="type_reply" value="1" checked>Phản hồi
+                                    <input checked type="radio" name="type_reply" value="1">Phản hồi
                                     <br/>
                                     <input type="radio" name="type_reply" value="2">URL
                             </div>
@@ -63,18 +50,6 @@
                                     class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group" id="child_menu">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
-                            Chọn menu con
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            @foreach($menu_childs as $child)
-                                <input type="checkbox" name="child_menu[]" value="{{ $child->id }}">{{ $child->title }}<br/>
-                            @endforeach
-                        </div>
-                    </div>
-
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -87,29 +62,4 @@
             </div>
         </div>
     </div>
-@endsection
-@section('custom-script')
-<script>
-$(document).ready(function(){
-    $('#type_reply').hide();
-    $('#child_menu').hide();
-    $('#isChild').on('change',function(){
-        var value = $('#isChild').val();
-        if(value == '1'){
-            $('#type_reply').show();
-            $('#child_menu').hide();
-        }else{
-            if(value == '0'){
-                $('#type_reply').hide();
-                $('#child_menu').show();
-            }else{
-                $('#type_reply').hide();
-                $('#child_menu').hide();
-            }
-           
-        }
-    })
-
-});
-</script>
 @endsection
