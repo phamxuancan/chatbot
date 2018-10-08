@@ -306,4 +306,21 @@ dd($input);
                 ]);
                 return redirect('persistent_child');
     }
+    public function publish_menu(){
+        $input = Input::all();
+        $page_id = session('page_id');
+        $id = $input['id'];
+        $status = $input['status'];
+        if($status == 1){
+            $status = 0;
+        }else{
+              $status = 1;  
+        }
+        DB::table('persistent_menus')
+                ->where('id', $id)
+                ->update([
+					'status' => $status
+                ]);
+                return redirect('persistent?action=menu');
+    }
 }

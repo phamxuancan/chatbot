@@ -144,4 +144,95 @@ class FanpageController extends Controller {
 			return redirect('Fanpage/list'); 
 		}
 	}
+	public function persistent($id){
+
+		$fanpage_info = DB::table('fanpages')->where('fanpage_id','=',$id)->first();
+		$access_token = $fanpage_info->page_accesstoken;
+		$service_url = "https://graph.facebook.com/v2.8/me/messenger_profile?access_token=$access_token";
+		$array = [];
+		$menu_persistents = DB::table('persistent_menus')
+			->where('page_id','=',$id)
+			->where('status','=',1)
+			->get();
+			if(count($menu_persistents)){
+				$array_data_menu = array();
+				$full_array_nested = array();
+				foreach($menu_persistents as $menu_parent){
+					if($menu_parent->isChild == 1){// neu la menu đơn
+						if($menu_parent->type_content == 1){
+							$array_parent = array(
+								'title'=> $menu_parent->title,
+								'type'=> 'postback',
+								'payload'=> $menu_parent->content,
+							);
+						}else{
+							$array_parent = array(
+								'title'=> $menu_parent->title,
+								'type'=> 'postback',
+								'url'=> $menu_parent->content,
+								'webview_height_ratio' => 'full'
+							);
+						}
+						array_push($array_data_menu,$array_parent);
+					}else{ // nếu là link tới 1 array data con
+						// dd($menu_parent);
+						$id_parent = $menu_parent->id;
+						$menu_persistent_childs = DB::table('persistent_menus')
+							->join('persistent_parent_childs', 'persistent_menus.id' , '=','persistent_parent_childs.parent_id')
+							->join('menu_childs', 'persistent_parent_childs.child_id', '=', 'menu_childs.id')
+							->select('menu_childs.*')
+							->where('persistent_menus.id','=',$id_parent)
+							->where('menu_childs.status','=',1)
+							->get();
+							if(count($menu_persistent_childs)){
+								$array_nested = array();
+								foreach($menu_persistent_childs as $menu_child){
+									if($menu_child->type == 1){
+										$array_child = array(
+											'title'=> $menu_child->title,
+											'type'=> 'postback',
+											'payload'=> $menu_child->content,
+										);
+									}else{
+										$array_child = array(
+											'title'=> $menu_child->title,
+											'type'=> 'web_url',
+											'url'=> $menu_child->content,
+											'webview_height_ratio' => 'full'
+										);
+									}
+									array_push($array_nested,$array_child);
+								}
+								$full_array_nested = array(
+									'title' => $menu_parent->title,
+									'type'  => 'nested',
+									'call_to_actions'  => $array_nested
+								);
+							}
+					}
+				}
+				$data = array(
+					'persistent_menu' => array(
+						array(
+							'locale' => "default",
+							'composer_input_disabled' => true, 
+							'call_to_actions' => array($full_array_nested)
+						)
+					)
+				);
+            $curl = curl_init($service_url);
+            curl_setopt($curl, CURLOPT_URL,$service_url);
+            curl_setopt($curl, CURLOPT_VERBOSE, 1);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($curl, CURLOPT_POSTFIELDS,json_encode($data));
+            $curl_response = curl_exec($curl);
+			curl_close($curl);
+			return ( $curl_response);
+		} 
+	}
 }

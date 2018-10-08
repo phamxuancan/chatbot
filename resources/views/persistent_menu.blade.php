@@ -30,7 +30,7 @@
                             <td>#</td>
                             <td>Tiêu đề</td>
                             <td>Loại</td>
-                            <td>Action</td>
+                            <td>Status</td>
                             <td>Thao tác</td>
                         </tr>
                         </thead>
@@ -45,14 +45,33 @@
                                     $action_id = $item->action_id;
                                     $update_path = 'persistent/menu/update?id='.$id;
                                     $delete_path = 'persistent/menu/delete?id='.$id;
+                                    $publish_path = 'persistent/menu/publish?id='.$item->id .'&status='.$item->status;
+                                    $status = $item->status=='1'?'Đang hoạt động':'Chưa hoạt động';
                                 @endphp
                                 <tr>
                                     <td>{{$id}}</td>
                                     <td>{{$title}}</td>
                                     <td>{{$type}}</td>
-                                    <td>{{$action_id}}</td>
+                                    <td>{{$status}}</td>
                                     <td>
                                         <ul class="tool-box">
+                                        @if($item->status == 1)
+                                            <li>
+                                                    <a href="{{$publish_path}}">
+                                                        <button type="button"
+                                                                class="btn btn-success btn-xs">Unpublish
+                                                        </button>
+                                                    </a>
+                                                </li>
+                                            @else
+                                            <li>
+                                                    <a href="{{$publish_path}}">
+                                                        <button type="button"
+                                                                class="btn btn-success btn-xs">Publish
+                                                        </button>
+                                                    </a>
+                                                </li>
+                                            @endif
                                             <li>
                                                 <a href="{{$update_path}}">
                                                     <button type="button"

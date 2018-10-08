@@ -41,6 +41,7 @@
                                             <img src="{{$imgURL}}" style="width: 200px; margin: 5px auto;">
                                             <i class="btn-option" style="display:none;">
                                                 <a href="Fanpage/hello/{{ $id_fanpage  }}" type="button" class="btn btn-success">Hello</a>
+                                                <a href="Fanpage/persistent/{{ $id_fanpage  }}" type="button" class="btn btn-success">Persistent Menu</a>
                                                 <a href="Fanpage/edit/{{ $id  }}" type="button" class="btn btn-warning">Edit</a>
                                                 <a href="Fanpage/delete/{{ $id  }}" type="button" class="btn btn-danger">Delete</a>
                                             </i>    

@@ -47,6 +47,7 @@ Route::get('persistent_child', 'Admin\PersistentMenuController@list_persistent_c
 Route::get('add_persistent', 'Admin\PersistentMenuController@add_persistent');
 Route::post('add_persistent', 'Admin\PersistentMenuController@add_persistent');
 Route::get('menuchild/publish', 'Admin\PersistentMenuController@publish');
+Route::get('persistent/menu/publish', 'Admin\PersistentMenuController@publish_menu');
 
 // can action
 Route::get('login', [ 'as' => 'login', 'uses' => 'UserController@login']);
@@ -63,7 +64,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('Fanpage/edit/{id}','FanpageController@edit');
 	Route::post('Fanpage/edit/{id}','FanpageController@edit');
 	Route::get('Fanpage/hello/{id}','FanpageController@hello');
-Route::get('FanpageCommentReply/setup','FanpageCommentReplyController@setup');
+	Route::get('Fanpage/persistent/{id}','FanpageController@persistent');
+	Route::get('FanpageCommentReply/setup','FanpageCommentReplyController@setup');
 	Route::get('FanpageCommentReply/view_setup','FanpageCommentReplyController@view_setup');
 	Route::post('FanpageCommentReply/view_setup','FanpageCommentReplyController@view_setup');
 	Route::get('FanpageCommentReply/setting_post/{id_post}','FanpageCommentReplyController@setting_post');
