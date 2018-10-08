@@ -168,7 +168,7 @@ class FanpageController extends Controller {
 						}else{
 							$array_parent = array(
 								'title'=> $menu_parent->title,
-								'type'=> 'postback',
+								'type'=> 'web_url',
 								'url'=> $menu_parent->content,
 								'webview_height_ratio' => 'full'
 							);
@@ -208,6 +208,7 @@ class FanpageController extends Controller {
 									'type'  => 'nested',
 									'call_to_actions'  => $array_nested
 								);
+								array_push($array_data_menu,$full_array_nested);
 							}
 					}
 				}
@@ -216,7 +217,7 @@ class FanpageController extends Controller {
 						array(
 							'locale' => "default",
 							'composer_input_disabled' => true, 
-							'call_to_actions' => array($full_array_nested)
+							'call_to_actions' => ($array_data_menu)
 						)
 					)
 				);
@@ -232,7 +233,18 @@ class FanpageController extends Controller {
             curl_setopt($curl, CURLOPT_POSTFIELDS,json_encode($data));
             $curl_response = curl_exec($curl);
 			curl_close($curl);
-			return ( $curl_response);
+			if($curl_response == '{"result":"success"}'){
+				\Session::flash('success','Lưu thành công menu persistent.');
+				return redirect('/');
+			}else{
+				Log::error('Lỗi :' . $curl_response);
+				\Session::flash('error','Không thành công.');
+				return redirect('/');
+			}
+		
+		}else{
+			\Session::flash('error','Chưa config menu persistent');
+			return redirect('/');
 		} 
 	}
 }

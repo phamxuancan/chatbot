@@ -168,15 +168,16 @@ dd($input);
                 ]
             );
             if(!empty($last_id)){
-                foreach($input['child_menu'] as $child_id){
-                    DB::table('persistent_parent_childs')->insert(
-                    [
-                        'parent_id' => $last_id,
-                        'child_id' => $child_id
-                    ]
-                );
+                if(isset($input['child_menu']) && count($input['child_menu'])){
+                    foreach($input['child_menu'] as $child_id){
+                        DB::table('persistent_parent_childs')->insert(
+                        [
+                            'parent_id' => $last_id,
+                            'child_id' => $child_id
+                        ]
+                    );
                 }
-                
+                }
             }
             return redirect('persistent');
         }
