@@ -216,7 +216,7 @@ class FanpageController extends Controller {
 					'persistent_menu' => array(
 						array(
 							'locale' => "default",
-							'composer_input_disabled' => true, 
+							'composer_input_disabled' => false, 
 							'call_to_actions' => ($array_data_menu)
 						)
 					)
