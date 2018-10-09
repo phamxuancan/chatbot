@@ -324,4 +324,18 @@ dd($input);
                 ]);
                 return redirect('persistent?action=menu');
     }
+    public function edit($id){  
+        $page_id = session('page_id');
+        $persistent_menus = DB::table('persistent_menus')
+            ->where('id','=',$id)
+            ->first();
+        $menu_childs = DB::table('menu_childs')
+            ->where('page_id','=',$page_id)
+            ->where('status','=',1)
+            ->get();
+        return view('persistent_menu_edit', array(
+            'menu_childs'=> $menu_childs,
+            'persistent_menus'=>$persistent_menus
+        ));
+    }
 }

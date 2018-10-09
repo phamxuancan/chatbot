@@ -131,7 +131,7 @@ class KeywordController extends BaseController
         $id = $request->id;
         $keyword = Keyword::find($id);
         if ($keyword) {
-            //$keyword->delete();
+            $keyword->delete();
         }
 
         return redirect('keyword');

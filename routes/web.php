@@ -41,6 +41,8 @@ Route::post('persistent', 'Admin\PersistentMenuController@update');
 
 Route::get('persistent/menu/update', 'Admin\PersistentMenuController@updateMenu');
 Route::post('persistent/menu/update', 'Admin\PersistentMenuController@updateMenu');
+Route::get('persistent/menu/edit/{id}', 'Admin\PersistentMenuController@edit');
+Route::post('persistent/menu/edit/{id}', 'Admin\PersistentMenuController@edit');
 Route::post('persistent/menu/delete', 'Admin\PersistentMenuController@deleteMenu');
 Route::get('active_persistent', 'Admin\PersistentMenuController@active_persistent');
 Route::get('persistent_child', 'Admin\PersistentMenuController@list_persistent_child');

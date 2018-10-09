@@ -43,7 +43,7 @@
                                     $type = $item->isChild==0?'Menu Cha':'Menu button';
                                     $title = $item -> title;
                                     $action_id = $item->action_id;
-                                    $update_path = 'persistent/menu/update?id='.$id;
+                                    $edit_path = "persistent/menu/edit/$id";
                                     $delete_path = 'persistent/menu/delete?id='.$id;
                                     $publish_path = 'persistent/menu/publish?id='.$item->id .'&status='.$item->status;
                                     $status = $item->status=='1'?'Đang hoạt động':'Chưa hoạt động';
@@ -73,7 +73,7 @@
                                                 </li>
                                             @endif
                                             <li>
-                                                <a href="{{$update_path}}">
+                                                <a href="{{$edit_path}}">
                                                     <button type="button"
                                                             class="btn btn-success btn-xs">Sửa
                                                     </button>

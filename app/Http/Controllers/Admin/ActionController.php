@@ -87,7 +87,7 @@ class ActionController extends BaseController
         $id = $request->id;
         $action = Action::find($id);
         if ($action) {
-            //$action->delete();
+            $action->delete();
         }
 
         return redirect('action');

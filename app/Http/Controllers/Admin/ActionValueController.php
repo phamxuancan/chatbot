@@ -49,8 +49,7 @@ class ActionValueController extends BaseController
             $action_id = $request->action;
             $action = Action::find($action_id);
 
-            if (!$id || !ActionValue::isExist($id)) {
-
+            if (!$id) {
                 return view('action_value_create', array(
                     'action' => $action
                 ));
@@ -73,7 +72,7 @@ class ActionValueController extends BaseController
 
             $value = null;
 
-            if ($id && ActionValue::isExist($id)) {
+            if ($id) {
                 $value = ActionValue::find($id);
             } else {
                 $value = new ActionValue();
@@ -94,13 +93,12 @@ class ActionValueController extends BaseController
     public function delete(Request $request)
     {
         $id = $request->id;
-        $action_id = $request->action_id;
+        $action_id = $request->action;
         $action = ActionValue::find($id);
         if ($action) {
             $action->delete();
         }
-
-        return redirect('actionvalue?action=' . $action_id);
+        return redirect('/actionvalue?action=' . $action_id);
     }
 
 
