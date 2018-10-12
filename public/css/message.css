@@ -1,0 +1,46 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.header{
+    height: 50px;
+    background-color:#66CCFF;
+}
+.text-align{
+    text-align: center;
+    margin: auto;
+}
+.vertical-align{
+    line-height: 50px;
+}
+.bold{
+    font-weight: bold;
+}
+.container{
+    width: 1000px;
+    height:100vh;
+    background-color: beige;
+    margin: 0 auto;
+}
+.btn-facebook{
+    display: flex;
+    height: 40px;
+    width: 254px;
+    background-color: #4267b2; 
+    border-radius: 6px;
+}
+.facebook_icon{
+    height: 30px;
+}
+.facebook_text{
+    line-height: 36px;
+    margin-left: 10px;
+    font-size: 1rem;
+    color: white;
+}
+.content{
+    /* background-color: rebeccapurple; */
+    display: flex;
+    justify-content: center;
+    padding: 100px;
+}
