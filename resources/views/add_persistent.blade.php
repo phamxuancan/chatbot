@@ -27,7 +27,7 @@
                             Tiêu đề
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="title" name="title"
+                            <input type="text" id="title" name="title" value="{{isset($child_menu->title)?$child_menu->title:'' }}"
                                    class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                                 Nội dung
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" id="title" name="content"
+                                <input type="text" id="title" name="content" value="{{isset($child_menu->content)?$child_menu->content:'' }}"
                                     class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>

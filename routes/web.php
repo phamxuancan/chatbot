@@ -108,4 +108,37 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('GiftcodeFanpages/edit/{id}','GiftcodeFanpagesController@edit');	
 	Route::get('GiftcodeFanpages/delete/{id}','GiftcodeFanpagesController@delete');	
 	Route::get('logout', [ 'as' => 'logout', 'uses' => 'UserController@logout']);
+
+	Route::get('/keyword', 'Admin\KeywordController@get');
+Route::get('/keyword/update', 'Admin\KeywordController@update');
+Route::post('/keyword/update', 'Admin\KeywordController@update');
+Route::get('/keyword/delete', 'Admin\KeywordController@delete');
+
+Route::get('/action', 'Admin\ActionController@get');
+Route::get('/action/update', 'Admin\ActionController@update');
+Route::post('/action/update', 'Admin\ActionController@update');
+Route::get('/action/delete', 'Admin\ActionController@delete');
+
+Route::get('actionvalue', 'Admin\ActionValueController@get');
+Route::get('actionvalue/update', 'Admin\ActionValueController@update');
+Route::post('actionvalue/update', 'Admin\ActionValueController@update');
+Route::get('actionvalue/delete', 'Admin\ActionValueController@delete');
+
+Route::get('persistent', 'Admin\PersistentMenuController@get');
+Route::post('persistent', 'Admin\PersistentMenuController@update');
+
+Route::get('persistent/menu/update', 'Admin\PersistentMenuController@updateMenu');
+Route::post('persistent/menu/update', 'Admin\PersistentMenuController@updateMenu');
+Route::get('persistent/menu/edit/{id}', 'Admin\PersistentMenuController@edit');
+Route::post('persistent/menu/edit/{id}', 'Admin\PersistentMenuController@edit');
+Route::get('persistent/menu/delete/{id}', 'Admin\PersistentMenuController@deleteMenu');
+Route::get('active_persistent', 'Admin\PersistentMenuController@active_persistent');
+Route::get('persistent_child', 'Admin\PersistentMenuController@list_persistent_child');
+Route::get('add_persistent', 'Admin\PersistentMenuController@add_persistent');
+Route::post('add_persistent', 'Admin\PersistentMenuController@add_persistent');
+Route::get('menuchild/publish', 'Admin\PersistentMenuController@publish');
+Route::get('menuchild/update', 'Admin\PersistentMenuController@updateMenuChild');
+Route::get('menuchild/delete', 'Admin\PersistentMenuController@delete_child');
+Route::post('menuchild/update', 'Admin\PersistentMenuController@updateMenuChild');
+Route::get('persistent/menu/publish', 'Admin\PersistentMenuController@publish_menu');
 });

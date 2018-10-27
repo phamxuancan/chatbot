@@ -401,4 +401,38 @@ dd($input);
             return redirect('persistent');
         }
     }
+    public function updateMenuChild(Request $request){
+        $input = Input::all();
+        $id = $input['id'];
+        $child_menu = DB::table('menu_childs')
+        ->where('id',$id)->first();
+        if ($request->isMethod('post')) {
+            DB::table('menu_childs')
+                    ->where('id',$id)
+                    ->update(
+                        [
+                            'title' => $input['title'],
+                            'content' => $input['content'],
+                            'updated_at' =>  date('Y-m-d H:i:s'),
+                            'type'=> $input['type_reply']
+                        ]
+                    );
+                    \Session::flash('success','Lưu thành công.');
+                    return redirect('persistent_child');
+        }
+        return view('add_persistent', array(
+            'child_menu' => $child_menu
+        ));
+    }
+    public function delete_child(Request $request){
+        $input = Input::all();
+        $id = $input['id'];
+        if(!empty($id)){
+            DB::table('menu_childs')
+            ->where('id', '=', $id)
+            ->delete();
+            \Session::flash('success','Lưu thành công.');
+            return redirect('persistent_child');
+        }
+    }
 }
