@@ -47,7 +47,6 @@
                             </select>
                         </div>
                     </div>
-                    @if($persistent_menus->isChild == 1)
                         <div id="type_reply">
                             <div class="form-group" >
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
@@ -77,18 +76,20 @@
                                 </div>
                             </div>
                         </div>
-                    @else
                         <div class="form-group" id="child_menu">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                 Chọn menu con
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 @foreach($menu_childs as $child)
-                                    <input type="checkbox" name="child_menu[]" value="{{ $child->id }}">{{ $child->title }}<br/>
+                                    @if(in_array($child->id,$array_child))
+                                        <input type="checkbox" name="child_menu[]" checked value="{{ $child->id }}">{{ $child->title }}<br/>
+                                    @else    
+                                        <input type="checkbox" name="child_menu[]" value="{{ $child->id }}">{{ $child->title }}<br/>
+                                    @endif    
                                 @endforeach
                             </div>
                         </div>
-                    @endif
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -103,27 +104,29 @@
     </div>
 @endsection
 @section('custom-script')
-<!-- <script>
+ <script>
 $(document).ready(function(){
     $('#type_reply').hide();
     $('#child_menu').hide();
+    var value = $('#isChild').val();
+        if(value == '1'){
+            $('#type_reply').show();
+            $('#child_menu').hide();
+        }else{
+            $('#type_reply').hide();
+            $('#child_menu').show();
+        }
     $('#isChild').on('change',function(){
         var value = $('#isChild').val();
         if(value == '1'){
             $('#type_reply').show();
             $('#child_menu').hide();
         }else{
-            if(value == '0'){
-                $('#type_reply').hide();
-                $('#child_menu').show();
-            }else{
-                $('#type_reply').hide();
-                $('#child_menu').hide();
-            }
-           
+            $('#type_reply').hide();
+            $('#child_menu').show();
         }
     })
 
 });
-</script> -->
+</script>
 @endsection

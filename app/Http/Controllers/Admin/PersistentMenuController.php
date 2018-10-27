@@ -160,7 +160,7 @@ dd($input);
                     'title' => $input['title'],
                     'page_id' => $page_id,
                     'content' => $input['content'],
-                    'type' => 2,
+                    'type' => 2,//type1 la button bat dau, type2 la
                     'isChild'=> $input['isChild'],
                     'created_at' =>  date('Y-m-d H:i:s'),
                     'updated_at' =>  date('Y-m-d H:i:s'),
@@ -324,7 +324,7 @@ dd($input);
                 ]);
                 return redirect('persistent?action=menu');
     }
-    public function edit($id){  
+    public function edit(Request $request, $id){  
         $page_id = session('page_id');
         $persistent_menus = DB::table('persistent_menus')
             ->where('id','=',$id)
@@ -333,9 +333,63 @@ dd($input);
             ->where('page_id','=',$page_id)
             ->where('status','=',1)
             ->get();
+        $menu_persistent_childs = DB::table('persistent_menus')
+            ->join('persistent_parent_childs', 'persistent_menus.id' , '=','persistent_parent_childs.parent_id')
+            ->join('menu_childs', 'persistent_parent_childs.child_id', '=', 'menu_childs.id')
+            ->select('menu_childs.*','persistent_parent_childs.child_id as id_relat')
+            ->where('persistent_menus.id','=',$id)
+            ->get();
+            $array_child = array();
+                if(count($menu_persistent_childs)){
+                    foreach($menu_persistent_childs as $child){
+                        array_push($array_child,$child->id);
+                    }  
+                }
+            if ($request->isMethod('post')) {
+                if(!empty($id)){
+                    $input = Input::all();
+                    DB::table('persistent_menus')
+                    ->where('id',$id)
+                    ->update(
+                        [
+                            'title' => $input['title'],
+                            'page_id' => $page_id,
+                            'content' => $input['content'],
+                            'isChild'=> $input['isChild'],
+                            'updated_at' =>  date('Y-m-d H:i:s'),
+                            'type_content'=> $input['type_reply']
+                        ]
+                    );
+                    if(isset($input['child_menu']) && count($input['child_menu'])){
+                        foreach($input['child_menu'] as $child_id){
+                            if(!in_array($child_id,$array_child)){
+                                DB::table('persistent_parent_childs')->insert(
+                                    [
+                                        'parent_id' => $id,
+                                        'child_id' => $child_id
+                                    ]
+                                );
+                            }
+                        }
+                    }
+                    if(count($array_child)){
+                       foreach($array_child as $child_exist){
+                           if(!in_array($child_exist,$input['child_menu'])){
+                                DB::table('persistent_parent_childs')
+                                ->where('parent_id', '=', $id)
+                                ->where('child_id', '=', $id)
+                                ->delete();
+                           }
+                       }     
+                    }
+                    \Session::flash('success','Lưu thành công.');
+                }
+                return redirect('persistent');
+            }        
         return view('persistent_menu_edit', array(
             'menu_childs'=> $menu_childs,
-            'persistent_menus'=>$persistent_menus
+            'persistent_menus'=>$persistent_menus,
+            'array_child' => $array_child
         ));
     }
 }
