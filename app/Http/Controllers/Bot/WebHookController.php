@@ -82,7 +82,7 @@ class WebHookController extends BaseController
             try{
                 $way_repay = 0;
                 if(!empty($payload) && $payload == "Bắt đầu" ){
-                    $message_text = 'Xin chào bạn đến với fanpage, chúng tôi có thể giúp gì cho bạn!';
+                    $message_text = 'Welcome you to my fanpage, please type help if you need my help?';
                     $menu_start = DB::table('persistent_menus')
                         ->where('page_id', '=', $fanpage_id)
                         ->where('type', '=', 1)
@@ -102,7 +102,7 @@ class WebHookController extends BaseController
                             ->where('keywords.page_id','=' ,$fanpage_id)
                             ->first();
                         if(empty($keywords)){
-                            $message_text = "Không hiểu từ khóa,làm ơn viết lại yêu cầu";
+                            $message_text = "Don't understand this command, please try again or type help for showing menu";
                         }else{
                             if($keywords->type_rp == 1){//phản hồi text
                                 $message_text = $keywords->value;

@@ -50,6 +50,7 @@ Route::get('add_persistent', 'Admin\PersistentMenuController@add_persistent');
 Route::post('add_persistent', 'Admin\PersistentMenuController@add_persistent');
 Route::get('menuchild/publish', 'Admin\PersistentMenuController@publish');
 Route::get('persistent/menu/publish', 'Admin\PersistentMenuController@publish_menu');
+Route::get('messages', 'MessageController@messages');
 
 // can action
 Route::get('login', [ 'as' => 'login', 'uses' => 'UserController@login']);
