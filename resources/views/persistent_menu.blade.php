@@ -44,7 +44,7 @@
                                     $title = $item -> title;
                                     $action_id = $item->action_id;
                                     $edit_path = "persistent/menu/edit/$id";
-                                    $delete_path = 'persistent/menu/delete?id='.$id;
+                                    $delete_path = "persistent/menu/delete/$id";
                                     $publish_path = 'persistent/menu/publish?id='.$item->id .'&status='.$item->status;
                                     $status = $item->status=='1'?'Đang hoạt động':'Chưa hoạt động';
                                 @endphp

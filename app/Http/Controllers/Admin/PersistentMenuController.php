@@ -392,4 +392,13 @@ dd($input);
             'array_child' => $array_child
         ));
     }
+    public function deleteMenu(Request $request, $id){
+        if(!empty($id)){
+            DB::table('persistent_menus')
+            ->where('id', '=', $id)
+            ->delete();
+            \Session::flash('success','Lưu thành công.');
+            return redirect('persistent');
+        }
+    }
 }
